@@ -1,20 +1,17 @@
 package com.ecs.ecs_inventory_admin.controller;
 
 import com.ecs.ecs_inventory_admin.dto.AdminDto;
-import com.ecs.ecs_inventory_admin.service.JWTService;
 import com.ecs.ecs_inventory_admin.service.interfaces.IAdminService;
 import com.ecs.ecs_inventory_admin.util.HelperFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin
 public class AdminDataController {
     @Autowired
     private IAdminService adminService;
@@ -37,12 +34,12 @@ public class AdminDataController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> adminLogin(@RequestBody AdminDto adminDto) {
+    public ResponseEntity<String> adminLogin(@RequestBody AdminDto adminDto) {
         Object response = adminService.adminLogin(adminDto);
         if (response.equals(HttpStatus.UNAUTHORIZED)) {
             return new ResponseEntity<>("Wrong credentials!", HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
 
     @PostMapping("/registration")

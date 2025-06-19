@@ -36,6 +36,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT,"/api/admin").hasRole("INVENTORY_ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/api/admin").hasRole("INVENTORY_ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/api/admin/login").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/public/images").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/public/images/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/api/public/images/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,"/api/public/images/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->

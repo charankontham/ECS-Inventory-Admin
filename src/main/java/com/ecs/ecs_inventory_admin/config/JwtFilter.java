@@ -56,6 +56,8 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         List<String> ALLOWED_PATHS = List.of(
                 "/api/admin/login",
+                "/api/public/images",
+                "/api/public/images/**",
                 "/api/admin/registration"
         );
         AntPathMatcher pathMatcher = new AntPathMatcher();

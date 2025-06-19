@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface AdminDataRepository extends MongoRepository<Admin, String> {
     Optional<Admin> findByAdminUsername(String username);
     boolean existsByAdminUsername(String username);
-
 }

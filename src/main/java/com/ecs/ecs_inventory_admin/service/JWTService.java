@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Service
 public class JWTService {
     @Value("${secretKey}")
-    private String secretKey = "";
+    private String secretKey;
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -48,11 +48,16 @@ public class JWTService {
     }
 
     private Claims extractAllClaims(String token) {
+        try{
         return Jwts.parser()
                 .verifyWith(getKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+        }catch(Exception e){
+            System.out.println("Error : " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
