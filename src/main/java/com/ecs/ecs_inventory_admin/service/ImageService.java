@@ -51,11 +51,21 @@ public class ImageService implements IImageService {
     @Override
     public ImageDocDto updateImage(ImageDocDto imageDocDto) {
         ImageDoc imageDocObj = ImageMapper.mapToImageDoc(imageDocDto);
+        imageDocObj.setComments("Updated Image contents");
         if(imageRepository.findById(imageDocObj.getId()).isPresent()){
             return ImageMapper.mapToImageDocDto(imageRepository.save(imageDocObj));
         }else{
             throw new ResourceNotFoundException("ImageId not found!");
         }
+    }
+
+    @Override
+    public ImageDocDto patchImage(String id, String imageName) {
+        ImageDoc imageDoc = imageRepository.findById(new ObjectId(id)).orElseThrow(
+                () -> new ResourceNotFoundException("Image not found!"));
+        imageDoc.setName(imageName);
+        imageDoc.setComments("Updated Image Name");
+        return ImageMapper.mapToImageDocDto(imageRepository.save(imageDoc));
     }
 
     @Override

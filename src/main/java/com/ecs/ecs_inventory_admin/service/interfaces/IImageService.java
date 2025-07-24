@@ -19,5 +19,6 @@ public interface IImageService {
     ImageDocDto getImageByName(String imageName);
     ImageDocDto saveImage(ImageDocDto imageDocDto);
     ImageDocDto updateImage(ImageDocDto imageDocDto);
+    ImageDocDto patchImage(String id, String imageName);
     void deleteImageById(String id);
 }

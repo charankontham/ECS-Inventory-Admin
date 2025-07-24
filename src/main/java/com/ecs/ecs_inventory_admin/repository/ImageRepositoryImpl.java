@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -52,11 +53,11 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
         }
 
         long total = mongoTemplate.count(query, ImageDoc.class);
-        query.with(pageable);
-
+        query.with(pageable).with(Sort.by(Sort.Direction.ASC, "_id"));
+        System.out.println("Query : "+ query.toString());
         List<ImageDoc> results = mongoTemplate.find(query, ImageDoc.class);
+        System.out.println("Query Results 0 : "+ results.get(0).getName());
 
-        // convert ImageDoc to ImageDocDto
         List<ImageDocDto> dtoList = results.stream()
                 .map(ImageMapper::mapToImageDocDto)
                 .toList();
