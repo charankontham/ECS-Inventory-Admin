@@ -1,34 +1,10 @@
 package com.ecs.ecs_inventory_admin.util;
 
-import com.ecs.ecs_inventory_admin.dto.OrderItemDto;
-import com.ecs.ecs_inventory_admin.dto.ProductFinalDto;
-import com.ecs.ecs_inventory_admin.exception.ResourceNotFoundException;
-import com.ecs.ecs_inventory_admin.feign.CustomerService;
-import com.ecs.ecs_inventory_admin.feign.ProductService;
-import lombok.Setter;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class HelperFunctions {
-
-    public static boolean checkZeroQuantities(List<Integer> quantities) {
-        for (Integer quantity : quantities) {
-            if (quantity == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean checkDuplicatesInList(List<Integer> list) {
-        Set<Integer> set = new HashSet<>(list);
-        return set.size() == list.size();
-    }
-
     public static ResponseEntity<?> getResponseEntity(Object response) {
         if (Objects.equals(response, Constants.ProductNotFound)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found!");
@@ -58,78 +34,5 @@ public class HelperFunctions {
             return new ResponseEntity<>("Validation failed/Bad request!", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-//    public static Object validateCustomerAndProductQuantities(Integer customerId,
-//                                                              List<Integer> productIds,
-//                                                              List<Integer> quantityList,
-//                                                              ProductService productService,
-//                                                              CustomerService customerService) {
-//        try {
-//            boolean customerExists = customerService.getCustomerById(customerId).getStatusCode() == HttpStatus.OK;
-//            if (!customerExists) {
-//                return Constants.CustomerNotFound;
-//            }
-//            List<ProductFinalDto> productFinalDtoList = getProductFinalDtoList(
-//                    productIds,
-//                    productService
-//            );
-//            int count = 0;
-//            for (ProductFinalDto inventoryProduct : productFinalDtoList) {
-//                if (quantityList.get(count++) > inventoryProduct.getProductQuantity()) {
-//                    throw new RuntimeException("Product quantity exceeded!");
-//                }
-//            }
-//            return Constants.NoErrorFound;
-//        } catch (ResourceNotFoundException e) {
-//            if (e.getMessage().contains("Product")) {
-//                return Constants.ProductNotFound;
-//            }
-//            System.out.println("Error: " + e.getMessage());
-//            return HttpStatus.BAD_REQUEST;
-//        } catch (RuntimeException e) {
-//            if (e.getMessage().contains("quantity exceeded!")) {
-//                return Constants.ProductQuantityExceeded;
-//            } else {
-//                System.out.println("Error: " + e.getMessage());
-//                return HttpStatus.BAD_REQUEST;
-//            }
-//        }
-//    }
-
-    public static List<ProductFinalDto> convertFromOrderItemsToProductDtoList(
-            List<OrderItemDto> orderItems,
-            ProductService productService) {
-        return orderItems.stream().map(
-                (x) -> {
-                    ProductFinalDto product = productService.getProductById(x.getProductId()).getBody();
-                    assert product != null;
-                    product.setProductQuantity(x.getQuantity());
-                    product.setProductPrice(x.getProductPrice());
-                    return product;
-                }
-        ).toList();
-    }
-
-    public static Float calculateSubTotalPrice(List<OrderItemDto> orderItems) {
-        AtomicReference<Float> subTotalPrice = new AtomicReference<>(0f);
-        orderItems.forEach(
-                (oderItem) -> subTotalPrice.
-                        updateAndGet(v -> v + (oderItem.getProductPrice()))
-        );
-        return subTotalPrice.get();
-    }
-
-    public static Float calculateTotalPrice(List<OrderItemDto> orderItems, Float shippingFee) {
-         return calculateSubTotalPrice(orderItems) + calculateTotalTax(orderItems) + shippingFee;
-    }
-
-    public static Float calculateTotalTax(List<OrderItemDto> orderItems) {
-        AtomicReference<Float> totalTax = new AtomicReference<>(0f);
-        orderItems.forEach(
-                (x) -> totalTax.
-                        updateAndGet(v -> v + (x.getProductPrice() * 0.07f))
-        );
-        return totalTax.get();
     }
 }

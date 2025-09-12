@@ -12,7 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class ImageService implements IImageService {
@@ -45,7 +46,8 @@ public class ImageService implements IImageService {
     @Override
     public ImageDocDto saveImage(ImageDocDto imageDocDto) {
         ImageDoc imageDocObj = ImageMapper.mapToImageDoc(imageDocDto);
-        return  ImageMapper.mapToImageDocDto(imageRepository.save(imageDocObj));
+        imageDocObj.setUploadedDate(LocalDateTime.now(ZoneId.of("UTC")));
+        return ImageMapper.mapToImageDocDto(imageRepository.save(imageDocObj));
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ImageService implements IImageService {
         imageDocObj.setComments("Updated Image contents");
         if(imageRepository.findById(imageDocObj.getId()).isPresent()){
             return ImageMapper.mapToImageDocDto(imageRepository.save(imageDocObj));
-        }else{
+        } else {
             throw new ResourceNotFoundException("ImageId not found!");
         }
     }

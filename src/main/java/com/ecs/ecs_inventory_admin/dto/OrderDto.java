@@ -15,10 +15,9 @@ public class OrderDto {
     private Integer orderId;
     private Integer customerId;
     private Integer addressId;
-    private String paymentType;
-    private String paymentStatus;
+    private Integer paymentType;
+    private Integer paymentStatus;
     private Float shippingFee;
     private LocalDateTime orderDate;
-    private LocalDateTime deliveryDate;
-    private String shippingStatus;
+    private Integer orderStatus;
 }

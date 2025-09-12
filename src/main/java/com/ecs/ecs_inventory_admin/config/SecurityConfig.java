@@ -32,9 +32,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers(HttpMethod.GET,"/api/admin").hasRole("INVENTORY_ADMIN")
-                                .requestMatchers(HttpMethod.PUT,"/api/admin").hasRole("INVENTORY_ADMIN")
-                                .requestMatchers(HttpMethod.DELETE,"/api/admin").hasRole("INVENTORY_ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/api/admin").
+                                hasAnyRole("INVENTORY_ADMIN","LOGISTICS_ADMIN","MARKETING_ADMIN")
+                                .requestMatchers(HttpMethod.PUT,"/api/admin").
+                                hasAnyRole("INVENTORY_ADMIN","LOGISTICS_ADMIN","MARKETING_ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,"/api/admin").
+                                hasAnyRole("INVENTORY_ADMIN","LOGISTICS_ADMIN","MARKETING_ADMIN")
+//                                .requestMatchers(HttpMethod.POST, "api/admin/registration").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/admin/login").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/public/images").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/public/images/**").permitAll()
