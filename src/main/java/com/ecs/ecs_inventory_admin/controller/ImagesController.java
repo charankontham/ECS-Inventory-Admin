@@ -29,6 +29,9 @@ public class ImagesController {
 
     @GetMapping("/view/getImageById/{imageId}")
     public ResponseEntity<byte[]> viewImageById(@PathVariable("imageId") String imageId ) {
+        if(imageId == null || imageId.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         ImageDocDto image = imageService.getImageById(imageId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(image.getContentType()));
