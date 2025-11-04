@@ -66,7 +66,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 "/api/public/images",
                 "/api/public/images/**",
                 "/api/public/images/view/getImageById/**",
-                "/api/admin/registration"
+                "/api/admin/registration",
+                "api/orderInvoice/**"
         );
         AntPathMatcher pathMatcher = new AntPathMatcher();
         String requestPath = request.getServletPath();

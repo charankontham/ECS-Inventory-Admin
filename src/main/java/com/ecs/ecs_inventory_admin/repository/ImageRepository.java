@@ -12,9 +12,4 @@ import java.util.Optional;
 
 public interface ImageRepository extends MongoRepository<ImageDoc, ObjectId>, ImageRepositoryCustom {
     Optional<ImageDoc> findByName(String imageName);
-//    Page<ImageDoc> findFilteredImages(Pageable pageable,
-//                                       @Param("imageSize") Integer imageSize,
-//                                       @Param("dimensions") String dimensions,
-//                                       @Param("contentType") String contentType,
-//                                       @Param("searchValue") String searchValue);
 }

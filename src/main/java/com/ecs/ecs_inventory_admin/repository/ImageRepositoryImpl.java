@@ -53,7 +53,7 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
         }
 
         long total = mongoTemplate.count(query, ImageDoc.class);
-        query.with(pageable).with(Sort.by(Sort.Direction.ASC, "_id"));
+        query.with(pageable).with(Sort.by(Sort.Direction.DESC, "_id"));
         System.out.println("Query : "+ query.toString());
         List<ImageDoc> results = mongoTemplate.find(query, ImageDoc.class);
         System.out.println("Query Results 0 : "+ results.get(0).getName());

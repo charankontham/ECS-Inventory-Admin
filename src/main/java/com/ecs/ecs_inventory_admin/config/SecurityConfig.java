@@ -46,6 +46,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT,"/api/public/images/**").permitAll()
                                 .requestMatchers(HttpMethod.PATCH,"/api/public/images/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE,"/api/public/images/**").permitAll()
+                                .requestMatchers("/api/orderInvoice/**").permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
